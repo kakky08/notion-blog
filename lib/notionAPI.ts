@@ -19,11 +19,18 @@ export const getAllPosts = async () => {
 
 
 const getPageMetaData = (post) => {
+
+    const getTags = (tags) => {
+        const allTags = tags.map((tag) => {
+            return tag.name;
+        })
+        return allTags;
+    }
     return {
         title: post.properties.Title.title[0].plain_text,
         discription: post.properties.Discription.rich_text[0].plain_text,
         date:  post.properties.Date.created_time,
         slug: post.properties.Slug.rich_text[0].plain_text,
-
+        tags: getTags(post.properties.Tags.multi_select),
     }
 }
