@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client"
+import { parseISO, format } from 'date-fns'
 
 const notion = new Client({
     auth: process.env.NOTION_TOKEN,
@@ -26,10 +27,14 @@ const getPageMetaData = (post) => {
         })
         return allTags;
     }
+
+    const date = parseISO(post.properties.Date.created_time)
+    const formattedDate = format(date, 'yyyy-MM-dd')
+
     return {
         title: post.properties.Title.title[0].plain_text,
         discription: post.properties.Discription.rich_text[0].plain_text,
-        date:  post.properties.Date.created_time,
+        date:  formattedDate,
         slug: post.properties.Slug.rich_text[0].plain_text,
         tags: getTags(post.properties.Tags.multi_select),
     }
