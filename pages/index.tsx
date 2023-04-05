@@ -29,7 +29,7 @@ export default function Home({ allPosts }) {
       </Head>
 
       <main className='container w-full mt-16'>
-        <h1 className='text-5l font-medium text-center mb-16'>
+        <h1 className='text-4xl font-medium text-center mb-16'>
           Notion Blog🚀
         </h1>
         {allPosts.map((post, index) => (
