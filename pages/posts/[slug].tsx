@@ -1,9 +1,11 @@
 import React from 'react'
-import { getSinglePost } from '@/lib/notionAPI';
+import { getAllPosts, getSinglePost } from '@/lib/notionAPI';
 
 export const getStaticPaths = async () => {
+    const allPosts = await getAllPosts();
+    const paths = allPosts.map(({slug}) => ({ params: {slug}}));
     return {
-        paths: [{params: {slug: "first-post"}}, {params: {slug: "second-post"}}],
+        paths,
         fallback: "blocking",
     }
 }
