@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
 import { getAllPosts, getSinglePost } from '@/lib/notionAPI';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {xcode} from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 export const getStaticPaths = async () => {
     const allPosts = await getAllPosts();
@@ -11,7 +13,7 @@ export const getStaticPaths = async () => {
     }
 }
 
-export const getStaticProps = async ({params}) => {
+export const getStaticProps = async ({ params }) => {
     const post = await getSinglePost(params.slug);
 
     return {
@@ -39,9 +41,28 @@ function Post({post}) {
         ))}
 
         <div className='mt-10 font-medium'>
-            <ReactMarkdown children={post.markdown} >
+        <ReactMarkdown
+            children={post.markdown}
+            components={{
+            code({node, inline, className, children, ...props}) {
+                const match = /language-(\w+)/.exec(className || '')
+                return !inline && match ? (
+                <SyntaxHighlighter
+                    {...props}
+                    children={String(children).replace(/\n$/, '')}
+                    style={xcode}
+                    language={match[1]}
+                    PreTag="div"
+                />
+                ) : (
+                <code {...props} className={className}>
+                    {children}
+                </code>
+                )
+            }
+            }}
+        />
 
-            </ReactMarkdown>
         </div>
     </section>
   )
