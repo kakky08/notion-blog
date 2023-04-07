@@ -8,6 +8,9 @@ const notion = new Client({
 
 const n2m = new NotionToMarkdown({notionClient: notion})
 
+/**
+ * 全ての記事を取得
+ * */
 export const getAllPosts = async () => {
     const posts = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID,
@@ -43,6 +46,10 @@ const getPageMetaData = (post) => {
     }
 };
 
+/**
+ *  ページ詳細用の値を取得
+ *  @param slug
+ * */
 export const getSinglePost = async (slug) => {
     const response = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID,
@@ -66,4 +73,16 @@ export const getSinglePost = async (slug) => {
         metadata,
         markdown: mdString,
     };
+
+};
+
+/**
+ * Topページ用記事の取得(4つ)
+ *
+ * @param pageSize
+ * */
+export const getPostsTopPage = async (pageSize: number) => {
+    const allPosts = getAllPosts();
+    const sliceTopPagePosts = allPosts.slice(0, pageSize);
+    return sliceTopPagePosts;
 };
