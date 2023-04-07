@@ -83,7 +83,7 @@ export const getSinglePost = async (slug) => {
  * @param pageSize
  * */
 export const getPostsTopPage = async (pageSize: number) => {
-    const allPosts = getAllPosts();
+    const allPosts = await getAllPosts();
     const sliceTopPagePosts = allPosts.slice(0, pageSize);
     return sliceTopPagePosts;
 };
@@ -101,3 +101,15 @@ export const getPostsByPage = async(page: number) => {
 
     return allPosts.slice(startIndex, endIndex);
 }
+
+/**
+ * 総ページ数の取得
+ */
+export const getNumberOfPages = async () => {
+    const allPosts = await getAllPosts();
+
+    return (
+        Math.floor(allPosts.length / NUMBER_OF_POSTS_PER_PAGE)
+        + (allPosts.length % NUMBER_OF_POSTS_PER_PAGE) > 0 ? 1 : 0
+    );
+};
