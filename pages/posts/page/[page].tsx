@@ -41,17 +41,20 @@ const BlogPageList({ Posts }) => {
         <h1 className='text-4xl font-medium text-center mb-16'>
           Notion Blog🚀
         </h1>
-        {Posts.map((post, index) => (
-          <div className='mx-4' key={index}>
-            <SinglePost
-              title={post.title}
-              description={post.description}
-              data={post.date}
-              tags={post.tags}
-              slug={post.slug}
-            />
-          </div>
-        ))}
+        <section className='sm:grid grid-cols-2 w-5/6 gap-3 mx-auto'>
+            {Posts.map((post, index) => (
+            <div key={index}>
+                <SinglePost
+                title={post.title}
+                description={post.description}
+                data={post.date}
+                tags={post.tags}
+                slug={post.slug}
+                isPaginationPage={true}
+                />
+            </div>
+            ))}
+        </section>
       </main>
     </div>
   )

@@ -42,6 +42,7 @@ export default function Home({ Posts }) {
               data={post.date}
               tags={post.tags}
               slug={post.slug}
+              isPaginationPage={false}
             />
           </div>
         ))}
