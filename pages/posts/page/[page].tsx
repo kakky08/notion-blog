@@ -3,11 +3,18 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { getAllPosts, getPostsTopPage } from '@/lib/notionAPI'
-import { SinglePost } from './components/Post/SinglePost'
+import { SinglePost } from '../../components/Post/SinglePost'
 import { GetStaticProps } from 'next'
-import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
+
+/** page番号の取得 */
+export const getAtaticPaths: GetStaticProps = async () => {
+    return {
+        paths: [],
+        fallback: "blocking"
+    }
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   const Posts = await getPostsTopPage(4);
@@ -20,7 +27,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-export default function Home({ Posts }) {
+const BlogPageList({ Posts }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -45,13 +52,9 @@ export default function Home({ Posts }) {
             />
           </div>
         ))}
-        <Link
-          href="/posts/page/1"
-          className='mb-6 lg:w-1/2 mx-auto rounded-md px-5 block text-right'
-        >
-          ...もっとみる
-        </Link>
       </main>
     </div>
   )
 }
+
+export default BlogPageList;
