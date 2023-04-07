@@ -2,23 +2,24 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts } from '@/lib/notionAPI'
+import { getAllPosts, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from './components/Post/SinglePost'
+import { GetStaticProps } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const getStaticProps = async () => {
-  const allPosts = await getAllPosts();
+export const getStaticProps: GetStaticProps = async () => {
+  const Posts = await getPostsTopPage(4);
 
   return {
     props: {
-      allPosts,
+      Posts,
     },
     revalidate: 60,
   }
 }
 
-export default function Home({ allPosts }) {
+export default function Home({ Posts }) {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -32,7 +33,7 @@ export default function Home({ allPosts }) {
         <h1 className='text-4xl font-medium text-center mb-16'>
           Notion Blog🚀
         </h1>
-        {allPosts.map((post, index) => (
+        {Posts.map((post, index) => (
           <div className='mx-4' key={index}>
             <SinglePost
               title={post.title}
