@@ -2,16 +2,22 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '../../components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
 /** page番号の取得 */
-export const getAtaticPaths: GetStaticProps = async () => {
+export const getStaticPaths: GetStaticProps = async () => {
+    const numberOgPage = await getNumberOfPages();
+
+    let params = [];
+    for(let i = 1; i <= numberOgPage; i++) {
+        params.push({params: { page: i.toString() }})
+    }
     return {
-        paths: [],
+        paths: params,
         fallback: "blocking"
     }
 };
@@ -28,7 +34,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
 }
 
-const BlogPageList({ postsByPage }) => {
+const BlogPageList = ({ postsByPage }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
