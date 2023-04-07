@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '../../components/Post/SinglePost'
 import { GetStaticProps } from 'next'
+import Pagination from '@/pages/components/Pagination/Pagination'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,15 +27,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const currentPage = context.params?.page;
     const postsByPage = await getPostsByPage(parseInt(currentPage.toString(), 10));
 
+    const numberOgPage = await getNumberOfPages();
+
     return {
         props: {
             postsByPage,
+            numberOgPage,
         },
         revalidate: 60,
     }
 }
 
-const BlogPageList = ({ postsByPage }) => {
+const BlogPageList = ({ postsByPage, numberOgPage }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -62,6 +66,9 @@ const BlogPageList = ({ postsByPage }) => {
             </div>
             ))}
         </section>
+        <Pagination
+            numberOgPage={numberOgPage}
+         />
       </main>
     </div>
   )
