@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '../../components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 
@@ -16,18 +16,19 @@ export const getAtaticPaths: GetStaticProps = async () => {
     }
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const Posts = await getPostsTopPage(4);
+export const getStaticProps: GetStaticProps = async (context) => {
+    const currentPage = context.params?.page;
+    const postsByPage = await getPostsByPage(parseInt(currentPage.toString(), 10));
 
-  return {
-    props: {
-      Posts,
-    },
-    revalidate: 60,
-  }
+    return {
+        props: {
+            postsByPage,
+        },
+        revalidate: 60,
+    }
 }
 
-const BlogPageList({ Posts }) => {
+const BlogPageList({ postsByPage }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -42,7 +43,7 @@ const BlogPageList({ Posts }) => {
           Notion Blog🚀
         </h1>
         <section className='sm:grid grid-cols-2 w-5/6 gap-3 mx-auto'>
-            {Posts.map((post, index) => (
+            {postsByPage.map((post, index) => (
             <div key={index}>
                 <SinglePost
                 title={post.title}
