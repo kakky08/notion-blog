@@ -3,10 +3,23 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { getAllPosts, getAllTags, getPostsTopPage } from '@/lib/notionAPI'
-import { SinglePost } from './components/Post/SinglePost'
+import { SinglePost } from '@/pages/components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import Tag from './components/Tag/Tag'
+
+type Post = {
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+  slug: string;
+};
+
+type HomeProps = {
+  Posts: Post[];
+  allTags: string[];
+};
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +36,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-export default function Home({ Posts, allTags }) {
+export default function Home({ Posts, allTags }: HomeProps) {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
