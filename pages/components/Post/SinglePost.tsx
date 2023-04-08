@@ -70,3 +70,4 @@ export const SinglePost = (props: Props) => {
     </>
   )
 }
+export default SinglePost;
