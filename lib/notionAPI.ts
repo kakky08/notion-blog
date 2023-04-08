@@ -144,3 +144,15 @@ export const getNumberOfPagesByTag = async (tagName: string) => {
             + (posts.length % NUMBER_OF_POSTS_PER_PAGE > 0 ? 1 : 0)
     );
 }
+
+/**
+ * タグを全て取得
+ */
+export const getAllTags = async () => {
+    const allPosts = await getAllPosts();
+    const allTagsDuplicationLists = allPosts.flatMap((post) => post.tags);
+    const set = new Set(allTagsDuplicationLists);
+    const allTagsList = Array.from(set);
+
+    return allTagsList;
+}
