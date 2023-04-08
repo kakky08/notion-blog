@@ -10,10 +10,30 @@ import Tag from '@/pages/components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
+type Params = {
+    params: {
+      tag: string;
+      page: string;
+    }
+}
+
+interface BlogTagPageListProps {
+    numberOfPagesByTag: number;
+    posts: {
+        title: string;
+        description: string;
+        date: string;
+        tags: string[];
+        slug: string;
+    }[];
+    currentTag: string;
+    allTags: string[];
+}
+
 /** page番号の取得 */
-export const getStaticPaths: GetStaticProps = async () => {
+export const getStaticPaths = async () => {
     const allTags = await getAllTags();
-    let params = [];
+    let params: Params[] = [];
 
     await Promise.all(
         allTags.map((tag) => {
@@ -31,8 +51,8 @@ export const getStaticPaths: GetStaticProps = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const currentPage: string = context.params?.page.toString();
-    const currentTag: string = context.params?.tag.toString();
+    const currentPage: string = context.params?.page?.toString() ?? "1";
+    const currentTag: string = context.params?.tag?.toString() ?? "";
 
     const upperCaseCurrentTag =
         currentTag.charAt(0).toUpperCase() + currentTag.slice(1);
@@ -54,7 +74,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
 }
 
-const BlogTagPageList = ({ numberOfPagesByTag, posts, currentTag, allTags }) => {
+const BlogTagPageList = ({ numberOfPagesByTag, posts, currentTag, allTags }: BlogTagPageListProps) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
