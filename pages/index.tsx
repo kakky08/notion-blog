@@ -3,10 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { getAllPosts, getAllTags, getPostsTopPage } from '@/lib/notionAPI'
-import { SinglePost } from '@/pages/components/Post/SinglePost'
+import SinglePost from "../components/Post/SinglePost"
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
-import Tag from './components/Tag/Tag'
+import Tag from '@/components/Tag/Tag'
 
 type Post = {
   title: string;

@@ -3,10 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { getAllPosts, getAllTags, getNumberOfPages, getNumberOfPagesByTag, getPostsByPage, getPostsByTagAndPage, getPostsTopPage } from '@/lib/notionAPI'
-import { SinglePost } from '@/pages/components/Post/SinglePost'
+import SinglePost from '@/components/Post/SinglePost'
 import { GetStaticProps } from 'next'
-import Pagination from '@/pages/components/Pagination/Pagination'
-import Tag from '@/pages/components/Tag/Tag'
+import Pagination from '@/components/Pagination/Pagination'
+import Tag from '@/components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
