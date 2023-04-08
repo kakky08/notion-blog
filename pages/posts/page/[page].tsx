@@ -4,14 +4,30 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { getAllPosts, getAllTags, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '../../components/Post/SinglePost'
-import { GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Pagination from '@/pages/components/Pagination/Pagination'
 import Tag from '@/pages/components/Tag/Tag'
+
+type Post = {
+    title: string;
+    description: string;
+    date: string;
+    tags: string[];
+    slug: string;
+  };
+
+
+  type BlogPageListProps = {
+    postsByPage: Post[];
+    numberOfPage: number;
+    allTags: string[];
+  };
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 /** page番号の取得 */
-export const getStaticPaths: GetStaticProps = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
     const numberOfPage = await getNumberOfPages();
 
     let params = [];
@@ -25,8 +41,8 @@ export const getStaticPaths: GetStaticProps = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const currentPage = context.params?.page;
-    const postsByPage = await getPostsByPage(parseInt(currentPage.toString(), 10));
+    const currentPage = context.params?.page ? parseInt(context.params.page.toString(), 10) : 1;
+    const postsByPage = await getPostsByPage(currentPage);
 
     const numberOfPage = await getNumberOfPages();
 
@@ -42,7 +58,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
 }
 
-const BlogPageList = ({ postsByPage, numberOfPage, allTags }) => {
+const BlogPageList = ({ postsByPage, numberOfPage, allTags }: BlogPageListProps) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
