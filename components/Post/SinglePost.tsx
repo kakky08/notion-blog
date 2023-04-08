@@ -10,7 +10,7 @@ type Props = {
     isPaginationPage: boolean;
 };
 
-export const SinglePost = (props: Props) => {
+const SinglePost = (props: Props) => {
     const {title, description, data, tags, slug, isPaginationPage} = props;
   return (
     <>
