@@ -43,10 +43,10 @@ export const getAllPosts = async () => {
 };
 
 
-const getPageMetaData = (post) => {
+const getPageMetaData = (post: any) => {
 
-    const getTags = (tags) => {
-        const allTags = tags.map((tag) => {
+    const getTags = (tags: any) => {
+        const allTags = tags.map((tag: any) => {
             return tag.name;
         })
         return allTags;
@@ -68,7 +68,7 @@ const getPageMetaData = (post) => {
  *  ページ詳細用の値を取得
  *  @param slug
  * */
-export const getSinglePost = async (slug) => {
+export const getSinglePost = async (slug: any) => {
     if (!process.env.NOTION_DATABASE_ID) {
         throw new Error("NOTION_DATABASE_ID is not defined.");
       }
