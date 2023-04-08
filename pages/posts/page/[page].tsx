@@ -2,10 +2,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getAllTags, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '../../components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Pagination from '@/pages/components/Pagination/Pagination'
+import Tag from '@/pages/components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,16 +30,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     const numberOfPage = await getNumberOfPages();
 
+    const allTags = await getAllTags();
+
     return {
         props: {
             postsByPage,
             numberOfPage,
+            allTags,
         },
         revalidate: 60,
     }
 }
 
-const BlogPageList = ({ postsByPage, numberOfPage }) => {
+const BlogPageList = ({ postsByPage, numberOfPage, allTags }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -70,6 +74,9 @@ const BlogPageList = ({ postsByPage, numberOfPage }) => {
             numberOfPage={numberOfPage}
             tag={""}
          />
+        <Tag
+            tags={allTags}
+        />
       </main>
     </div>
   )
