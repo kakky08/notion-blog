@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsByTagAndPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '@/pages/components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Pagination from '@/pages/components/Pagination/Pagination'
@@ -21,21 +21,23 @@ export const getStaticPaths: GetStaticProps = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const currentPage = context.params?.page;
-    const postsByPage = await getPostsByPage(parseInt(currentPage.toString(), 10));
+    const currentPage: string = context.params?.page.toString();
+    const currentTag: string = context.params?.tag.toString();
 
-    const numberOgPage = await getNumberOfPages();
+    const upperCaseCurrentTag =
+        currentTag.charAt(0).toUpperCase() + currentTag.slice(1);
+
+    const posts = await getPostsByTagAndPage(upperCaseCurrentTag, parseInt(currentPage, 10));
 
     return {
         props: {
-            postsByPage,
-            numberOgPage,
+            posts,
         },
         revalidate: 60,
     }
 }
 
-const BlogTagPageList = ({ postsByPage, numberOgPage }) => {
+const BlogTagPageList = ({ numberOgPage, posts }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -50,7 +52,7 @@ const BlogTagPageList = ({ postsByPage, numberOgPage }) => {
           Notion Blog🚀
         </h1>
         <section className='sm:grid grid-cols-2 w-5/6 gap-3 mx-auto'>
-            {postsByPage.map((post, index) => (
+            {posts.map((post, index) => (
             <div key={index}>
                 <SinglePost
                 title={post.title}
