@@ -6,7 +6,9 @@ import {vscDarkPlus} from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import Link from 'next/link';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
+
 export const getStaticPaths: GetStaticPaths = async () => {
+
     const allPosts = await getAllPosts();
     const paths = allPosts.map(({slug}) => ({ params: {slug}}));
     return {
@@ -15,12 +17,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 }
 
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (!params?.slug) {
         return {
             notFound: true,
         };
-    }    const post = await getSinglePost(params.slug);
+    }    
+    const post = await getSinglePost(params.slug);
 
     return {
       props: {
@@ -30,7 +34,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
+
 function Post({post}: { post: any }) {
+
   return (
     <section className='container lg:px-2 px-5 h-screen lg:w-2/5 mx-auto mt-20'>
         <h2 className='w-full text-2xl font-medium'>{post.metadata.title}</h2>
