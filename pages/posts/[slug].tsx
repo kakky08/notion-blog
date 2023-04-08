@@ -45,26 +45,27 @@ function Post({post}) {
 
         <div className='mt-10 font-medium'>
         <ReactMarkdown
-            children={post.markdown}
             components={{
-            code({node, inline, className, children, ...props}) {
+            code({node, inline, className, children}) {
                 const match = /language-(\w+)/.exec(className || '')
                 return !inline && match ? (
                 <SyntaxHighlighter
-                    {...props}
-                    children={String(children).replace(/\n$/, '')}
                     style={vscDarkPlus}
                     language={match[1]}
                     PreTag="div"
-                />
+                >
+                    {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
                 ) : (
-                <code {...props} className={className}>
+                <code>
                     {children}
                 </code>
                 )
             }
             }}
-        />
+        >
+            {post.markdown}
+        </ReactMarkdown>
         <Link href="/">
             <span className='pb-20 block mt-3 text-sky-900'>←ホームに戻る</span>
         </Link>
