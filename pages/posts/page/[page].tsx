@@ -11,10 +11,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 /** page番号の取得 */
 export const getStaticPaths: GetStaticProps = async () => {
-    const numberOgPage = await getNumberOfPages();
+    const numberOfPage = await getNumberOfPages();
 
     let params = [];
-    for(let i = 1; i <= numberOgPage; i++) {
+    for(let i = 1; i <= numberOfPage; i++) {
         params.push({params: { page: i.toString() }})
     }
     return {
@@ -27,18 +27,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const currentPage = context.params?.page;
     const postsByPage = await getPostsByPage(parseInt(currentPage.toString(), 10));
 
-    const numberOgPage = await getNumberOfPages();
+    const numberOfPage = await getNumberOfPages();
 
     return {
         props: {
             postsByPage,
-            numberOgPage,
+            numberOfPage,
         },
         revalidate: 60,
     }
 }
 
-const BlogPageList = ({ postsByPage, numberOgPage }) => {
+const BlogPageList = ({ postsByPage, numberOfPage }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -67,7 +67,7 @@ const BlogPageList = ({ postsByPage, numberOgPage }) => {
             ))}
         </section>
         <Pagination
-            numberOgPage={numberOgPage}
+            numberOfPage={numberOfPage}
          />
       </main>
     </div>

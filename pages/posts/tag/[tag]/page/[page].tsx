@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getNumberOfPages, getPostsByPage, getPostsByTagAndPage, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getNumberOfPages, getNumberOfPagesByTag, getPostsByPage, getPostsByTagAndPage, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from '@/pages/components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Pagination from '@/pages/components/Pagination/Pagination'
@@ -11,8 +11,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 /** page番号の取得 */
 export const getStaticPaths: GetStaticProps = async () => {
-    const numberOgPage = await getNumberOfPages();
+    const numberOfPagesByTag = await getNumberOfPagesByTag();
 
+    let params = [];
+    for(let i = 1; i <= numberOfPagesByTag; i++) {
+        params.push({params: { page: i.toString() }})
+    }
 
     return {
         paths: [{params: {tag: "blog", page: "1"}}],
