@@ -6,6 +6,7 @@ import { getAllPosts, getAllTags, getNumberOfPages, getNumberOfPagesByTag, getPo
 import { SinglePost } from '@/pages/components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Pagination from '@/pages/components/Pagination/Pagination'
+import Tag from '@/pages/components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,17 +41,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     const numberOfPagesByTag = await getNumberOfPagesByTag(upperCaseCurrentTag);
 
+    const allTags = await getAllTags();
+
     return {
         props: {
             posts,
             numberOfPagesByTag,
             currentTag,
+            allTags
         },
         revalidate: 60,
     }
 }
 
-const BlogTagPageList = ({ numberOfPagesByTag, posts, currentTag }) => {
+const BlogTagPageList = ({ numberOfPagesByTag, posts, currentTag, allTags }) => {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -79,9 +83,12 @@ const BlogTagPageList = ({ numberOfPagesByTag, posts, currentTag }) => {
             ))}
         </section>
         <Pagination
-            numberOgPage={numberOfPagesByTag}
+            numberOfPage={numberOfPagesByTag}
             tag={currentTag}
          />
+        <Tag
+            tags={allTags}
+        />
       </main>
     </div>
   )

@@ -25,13 +25,17 @@ export const SinglePost = (props: Props) => {
                     </Link>
                 </h2>
                 <div className='text-gray-200 mr-2'>{data}</div>
-                {tags.map((tag, index) => (
-                    <span
+                {tags.map((tag: string, index: number) => (
+                    <Link
                         key={index}
-                        className='text-white bg-gray-500 rounded-x1 px-2 pb-1 mr-2 font-medium'
+                        href={`/posts/tag/${tag}/page/1`}
                     >
-                        {tag}
-                    </span>
+                        <span
+                            className='text-white bg-gray-500 rounded-x1 px-2 pb-1 mr-2 font-medium'
+                        >
+                            {tag}
+                        </span>
+                    </Link>
                 ))}
             </div>
             <p className='text-gray-100'>{description}</p>
@@ -47,13 +51,17 @@ export const SinglePost = (props: Props) => {
                     </Link>
                 </h2>
                 <div className='text-gray-100'>{data}</div>
-                {tags.map((tag, index) => (
-                    <span
+                {tags.map((tag: string, index: number) => (
+                    <Link
                         key={index}
-                        className='text-white bg-gray-500 rounded-x1 px-2 pb-1 font-medium'
+                        href={`/posts/tag/${tag}/page/1`}
                     >
-                        {tag}
-                    </span>
+                        <span
+                            className='text-white bg-gray-500 rounded-x1 px-2 pb-1 font-medium'
+                        >
+                            {tag}
+                        </span>
+                    </Link>
                 ))}
             </div>
             <p className='text-gray-100'>{description}</p>

@@ -3,14 +3,14 @@ import Link from 'next/link'
 import React from 'react'
 
 interface Props {
-    numberOgPage: number;
+    numberOfPage: number;
     tag: string;
 }
 
 function Pagination(props: Props) {
-    const { numberOgPage, tag } = props;
+    const { numberOfPage, tag } = props;
     let pages = [];
-    for (let i = 1; i <= numberOgPage; i++) {
+    for (let i = 1; i <= numberOfPage; i++) {
         ;
         pages.push(i);
     }

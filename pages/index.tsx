@@ -2,25 +2,28 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { getAllPosts, getPostsTopPage } from '@/lib/notionAPI'
+import { getAllPosts, getAllTags, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from './components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
+import Tag from './components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const getStaticProps: GetStaticProps = async () => {
   const Posts = await getPostsTopPage(4);
+  const allTags = await getAllTags();
 
   return {
     props: {
       Posts,
+      allTags,
     },
     revalidate: 60,
   }
 }
 
-export default function Home({ Posts }) {
+export default function Home({ Posts, allTags }) {
   return (
     <div className='container h-full w-full mx-auto'>
       <Head>
@@ -52,6 +55,9 @@ export default function Home({ Posts }) {
         >
           ...もっとみる
         </Link>
+        <Tag
+          tags={allTags}
+        />
       </main>
     </div>
   )
