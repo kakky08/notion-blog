@@ -13,6 +13,11 @@ const n2m = new NotionToMarkdown({notionClient: notion})
  * 全ての記事を取得
  * */
 export const getAllPosts = async () => {
+
+    if (!process.env.NOTION_DATABASE_ID) {
+        throw new Error("NOTION_DATABASE_ID is not defined.");
+      }
+
     const posts = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID,
         page_size: 100,
@@ -64,6 +69,9 @@ const getPageMetaData = (post) => {
  *  @param slug
  * */
 export const getSinglePost = async (slug) => {
+    if (!process.env.NOTION_DATABASE_ID) {
+        throw new Error("NOTION_DATABASE_ID is not defined.");
+      }
     const response = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID,
         filter: {
