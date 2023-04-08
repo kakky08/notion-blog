@@ -6,6 +6,7 @@ import { getAllPosts, getPostsTopPage } from '@/lib/notionAPI'
 import { SinglePost } from './components/Post/SinglePost'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
+import Tag from './components/Tag/Tag'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -52,6 +53,7 @@ export default function Home({ Posts }) {
         >
           ...もっとみる
         </Link>
+        <Tag />
       </main>
     </div>
   )
